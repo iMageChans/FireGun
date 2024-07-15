@@ -26,7 +26,7 @@ class NodeReward(D9Contract):
         params = {
             "node_id": node_id,
         }
-        return self.contract_exec('get_node_rewards_data', params)
+        return self.contract_exec('get_node_reward_data', params)
 
     def set_authorized_receiver(self, node_id: str, receiver_id: str):
         params = {
