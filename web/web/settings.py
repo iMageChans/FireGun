@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "amm.apps.AmmConfig",
     "merchant.apps.MerchantConfig",
     "mining.apps.MiningConfig",
-    "node.apps.NodeConfig"
+    "node.apps.NodeConfig",
+    "usdt.apps.UsdtConfig"
 ]
 
 MIDDLEWARE = [
