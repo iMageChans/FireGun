@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "burning.apps.BurningConfig",
+    "amm.apps.AmmConfig",
+    "merchant.apps.MerchantConfig"
 ]
 
 MIDDLEWARE = [

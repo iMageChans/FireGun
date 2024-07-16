@@ -19,6 +19,8 @@ print("生成的助记词:", mnemonic)
 
 keypair = Keypair.create_from_mnemonic(mnemonic, ss58_format=9)
 private_key_keypair = Keypair.create_from_private_key(private_key, ss58_format=9)
+print("keypair:", keypair.ss58_address)
+print("private_key_keypair:", private_key_keypair.ss58_address)
 print("地址:", keypair.ss58_address)
 print("公钥:", keypair.public_key.hex())
 print("私钥:", keypair.private_key.hex())
@@ -36,10 +38,10 @@ print("私钥生成私钥:", keypair.private_key.hex())
 # mining_pool = MiningPool(private_key_keypair)
 # print(mining_pool.get_total_volume())
 
-voting_queries = VotingQueries()
-number = voting_queries.get_number_of_candidates()
-address_list = voting_queries.get_session_node_list(number)
-
-for address in address_list:
-    node = voting_queries.get_node_metadata(address)
-    vote = voting_queries.get_node_accumulative_votes(address)
+# voting_queries = VotingQueries()
+# number = voting_queries.get_number_of_candidates()
+# address_list = voting_queries.get_session_node_list(number)
+#
+# for address in address_list:
+#     node = voting_queries.get_node_metadata(address)
+#     vote = voting_queries.get_node_accumulative_votes(address)

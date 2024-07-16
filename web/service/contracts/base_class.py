@@ -27,8 +27,8 @@ class D9Contract(ContractInstance):
     def contract_exec(self, call_name: str, call_params: dict | None = None, value: int = 0):
         return self.contract.exec(self.keypair, call_name, call_params, value)
 
-    def contract_read(self, call_name: str):
-        return self.contract.read(self.keypair, call_name)
+    def contract_read(self, call_name: str, call_params: dict | None = None, value: int = 0):
+        return self.contract.read(self.keypair, call_name, call_params, value)
 
 
 class Currency(Enum):

@@ -14,7 +14,7 @@ class Merchant(D9Contract):
         return self.contract_exec('subscribe', params, usdt_base_units)
 
     def redeem_d9(self):
-        return self.contract_read('redeem_d9')
+        return self.contract_exec('redeem_d9')
 
     def give_points_d9(self, consumer_id: str, d9_amount: int):
         params = {
@@ -46,10 +46,10 @@ class Merchant(D9Contract):
         params = {
             "account_id": account_id,
         }
-        return self.contract_exec('get_expiry', params)
+        return self.contract_read('get_expiry', params)
 
     def get_account(self, account_id: str):
         params = {
             "account_id": account_id,
         }
-        return self.contract_exec('get_account', params)
+        return self.contract_read('get_account', params)
