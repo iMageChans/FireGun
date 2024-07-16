@@ -22,4 +22,6 @@ urlpatterns = [
     path('api/burning/', include('burning.urls')),
     path('api/amm/', include('amm.urls')),
     path('api/merchant/', include('merchant.urls')),
+    path('api/mining/', include('mining.urls')),
+    path('api/node/', include('node.urls')),
 ]

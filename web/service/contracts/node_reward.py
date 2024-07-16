@@ -20,13 +20,13 @@ class NodeReward(D9Contract):
         params = {
             "session_index": session_index,
         }
-        return self.contract_exec('get_session_rewards_data', params)
+        return self.contract_read('get_session_rewards_data', params)
 
     def get_node_rewards_data(self, node_id: str):
         params = {
             "node_id": node_id,
         }
-        return self.contract_exec('get_node_reward_data', params)
+        return self.contract_read('get_node_reward_data', params)
 
     def set_authorized_receiver(self, node_id: str, receiver_id: str):
         params = {

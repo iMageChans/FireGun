@@ -17,7 +17,7 @@ class MiningPool(D9Contract):
         params = {
             "session_index": session_index,
         }
-        return self.contract_exec('get_session_volume', params)
+        return self.contract_read('get_session_volume', params)
 
     def get_total_volume(self):
         return self.contract_read('get_total_volume')

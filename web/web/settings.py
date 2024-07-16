@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "burning.apps.BurningConfig",
     "amm.apps.AmmConfig",
-    "merchant.apps.MerchantConfig"
+    "merchant.apps.MerchantConfig",
+    "mining.apps.MiningConfig",
+    "node.apps.NodeConfig"
 ]
 
 MIDDLEWARE = [
