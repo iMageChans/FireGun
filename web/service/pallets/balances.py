@@ -14,7 +14,7 @@ class BalancesQueries(PalletQueriesBase):
              float: balance
         """
         result = self.chain_interface.query('System', 'Account', [account_id])
-        return result['data']['free']
+        return result.value['data']['free']
 
     def get_locks(self, account_id: str):
         """
@@ -25,7 +25,6 @@ class BalancesQueries(PalletQueriesBase):
              list: locks
         """
         result = self.compose_query('Locks', [account_id])
-        print("result is ", result)
         return result.value
 
 
@@ -47,4 +46,4 @@ class BalancesExtrinsics(PalletExtrinsicsBase):
             'value': amount
         })
 
-        return result.value
+        return result

@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "burning.apps.BurningConfig",
+    "rest_framework",
     "amm.apps.AmmConfig",
     "merchant.apps.MerchantConfig",
     "mining.apps.MiningConfig",
     "node.apps.NodeConfig",
-    "usdt.apps.UsdtConfig"
+    "usdt.apps.UsdtConfig",
+    "balances.apps.BalancesConfig"
 ]
 
 MIDDLEWARE = [

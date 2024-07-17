@@ -1,10 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from utils import keypair
+from service.utils import keypair
 from service.contracts import market_maker
-from utils.accounts import get_valid_address
-from utils.numbers import format_number
+from service.utils.accounts import get_valid_address
+from service.utils.numbers import format_number
 from service.contracts.base_class import Direction
 
 

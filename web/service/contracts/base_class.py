@@ -1,13 +1,9 @@
 import os
-from pathlib import Path
 from service.utils.interface import D9Interface
 from substrateinterface.contracts import ContractInstance
 from substrateinterface import Keypair
 from enum import Enum
-from service.utils.env import EnvConfig
-
-
-config = EnvConfig()
+from service.utils.env import config
 
 
 class D9Contract(ContractInstance):

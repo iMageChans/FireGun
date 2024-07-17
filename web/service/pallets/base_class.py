@@ -1,13 +1,11 @@
-from service.utils.env import EnvConfig
+from service.utils.env import config
 from service.utils.interface import D9Interface
-
-
-config = EnvConfig()
+from substrateinterface import Keypair
 
 
 d9_interface = D9Interface(
-    url=config.get('MAIN_NET_URL'),  # 这里使用了 Polkadot 主网的 RPC 端点
-    ss58_format=9,                # ss58 格式，0 代表 Polkadot 主网
+    url=config.get('MAIN_NET_URL'),
+    ss58_format=9,
     type_registry_preset='polkadot'
 )
 
@@ -29,7 +27,6 @@ class PalletExtrinsicsBase:
             call_function=function_name,
             call_params=function_params
         )
-
 
 class PalletQueriesBase:
     """

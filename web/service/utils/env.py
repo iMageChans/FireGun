@@ -16,5 +16,3 @@ class EnvConfig:
 
 
 config = EnvConfig()
-
-print(config.get('NODE_REWARD_CONTRACT'))
