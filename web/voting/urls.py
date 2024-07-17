@@ -26,5 +26,5 @@ urlpatterns = [
     path('change-candidate-support-share/', ChangeCandidateSupportShare.as_view(), name='change-candidate-support-share'),
     path('delegate-votes/', DelegateVotes.as_view(), name='delegate-votes'),
     path('redistribute-votes/', RedistributeVotes.as_view(), name='redistribute-votes'),
-    path('remove-candidacy/', RedistributeVotes.as_view(), name='remove-candidacy'),
+    path('remove-candidacy/', RemoveCandidacy.as_view(), name='remove-candidacy'),
 ]
