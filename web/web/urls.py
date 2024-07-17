@@ -25,4 +25,6 @@ urlpatterns = [
     path('api/mining/', include('mining.urls')),
     path('api/node/', include('node.urls')),
     path('api/balances/', include('balances.urls')),
+    path('api/referrals/', include('referrals.urls')),
+    path('api/voting/', include('voting.urls')),
 ]

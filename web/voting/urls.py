@@ -1,0 +1,30 @@
+from django.urls import path
+from .views import (GetNumberOfCandidates,
+                    CurrentSessionIndex,
+                    ValidatorStats,
+                    GetNodeAccumulativeVotes,
+                    GetNodeMetadata,
+                    NodeToUserVoteTotals,
+                    GetSessionNodeList,
+                    AddVotingInterest,
+                    ChangeCandidateName,
+                    ChangeCandidateSupportShare,
+                    DelegateVotes,
+                    RedistributeVotes,
+                    RemoveCandidacy)
+
+urlpatterns = [
+    path('get-number-of-candidates/', GetNumberOfCandidates.as_view(), name='get-number-of-candidates'),
+    path('current-session-index/', CurrentSessionIndex.as_view(), name='current-session-index'),
+    path('validator-stats/', ValidatorStats.as_view(), name='validator-stats'),
+    path('get-node-accumulative-votes/', GetNodeAccumulativeVotes.as_view(), name='get-node-accumulative-votes'),
+    path('get-node-metadata/', GetNodeMetadata.as_view(), name='get-node-metadata'),
+    path('node-to-user-vote-totals/', NodeToUserVoteTotals.as_view(), name='node-to-user-vote-totals'),
+    path('get-session-node-list/', GetSessionNodeList.as_view(), name='get-session-node-list'),
+    path('add-voting-interest/', AddVotingInterest.as_view(), name='add-voting-interest'),
+    path('change-candidate-name/', ChangeCandidateName.as_view(), name='change-candidate-name'),
+    path('change-candidate-support-share/', ChangeCandidateSupportShare.as_view(), name='change-candidate-support-share'),
+    path('delegate-votes/', DelegateVotes.as_view(), name='delegate-votes'),
+    path('redistribute-votes/', RedistributeVotes.as_view(), name='redistribute-votes'),
+    path('remove-candidacy/', RedistributeVotes.as_view(), name='remove-candidacy'),
+]

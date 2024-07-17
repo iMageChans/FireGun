@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     "mining.apps.MiningConfig",
     "node.apps.NodeConfig",
     "usdt.apps.UsdtConfig",
-    "balances.apps.BalancesConfig"
+    "balances.apps.BalancesConfig",
+    "referrals.apps.ReferralsConfig",
+    "voting.apps.VotingConfig"
 ]
 
 MIDDLEWARE = [
