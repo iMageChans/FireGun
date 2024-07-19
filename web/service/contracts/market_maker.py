@@ -14,7 +14,7 @@ class MarketMaker(D9Contract):
         params = {
             "account_id": account_id,
         }
-        return self.contract_exec('get_liquidity_provider', params)
+        return self.contract_read('get_liquidity_provider', params)
 
     def add_liquidity(self, usdt_amount: int, d9_amount: int):
         params = {

@@ -37,6 +37,9 @@ class Direction:
         self.from_currency = from_currency
         self.to_currency = to_currency
 
+    def encode(self):
+        return self.from_currency.value | self.to_currency.value
+
     def __eq__(self, other):
         if isinstance(other, Direction):
             return (self.from_currency == other.from_currency and
