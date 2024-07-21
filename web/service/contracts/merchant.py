@@ -7,7 +7,7 @@ class Merchant(D9Contract):
     def __init__(self, keypair: Keypair):
         super().__init__('MERCHANT_CONTRACT', 'd9_merchant_mining.json', keypair)
 
-    def subscribe(self, account_id: str, usdt_base_units: int):
+    def subscribe(self, usdt_base_units: int):
         params = {
             "usdt_amount": usdt_base_units,
         }
@@ -20,14 +20,14 @@ class Merchant(D9Contract):
         params = {
             "consumer_id": consumer_id,
         }
-        return self.contract_exec('give_points_d9', params, value=d9_amount)
+        return self.contract_exec('give_green_points_d9', params, value=d9_amount)
 
     def give_points_usdt(self, consumer_id: str, usdt_amount: int):
         params = {
             "consumer_id": consumer_id,
             "usdt_payment": usdt_amount
         }
-        return self.contract_exec('give_points_usdt', params, value=usdt_amount)
+        return self.contract_exec('give_green_points_usdt', params, value=usdt_amount)
 
     def send_usdt_payment_to_merchant(self, merchant_id: str, usdt_amount: int):
         params = {

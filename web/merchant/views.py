@@ -5,113 +5,61 @@ from service.utils import keypair
 from service.contracts import merchant
 from service.utils.accounts import get_valid_address
 
-
-class SubscribeView(APIView):
-
-    def post(self, request):
-        valid_address = get_valid_address(request.data['account_id'])
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).subscribe(valid_address, request.data['usdt'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+from base.views import BaseView
+from merchant import serializers
+from service.requests.merchant.subscribe import Subscribe
+from service.requests.merchant.redeem_d9 import Redeem
+from service.requests.merchant.give_green_points_d9 import GivePointsD9
+from service.requests.merchant.give_green_points_usdt import GivePointsUSDT
+from service.requests.merchant.send_d9_payment_to_merchant import D9Payment
+from service.requests.merchant.send_usdt_payment_to_merchant import USDTPayment
+from service.requests.merchant.get_merchant_expiry import GetMerchantExpiry
+from service.requests.merchant.get_account import GetAccount
 
 
-class RedeemView(APIView):
+class SubscribeView(BaseView):
 
-    def post(self, request):
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).redeem_d9()
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.SubscribeSerializer
+    action_class = Subscribe
 
 
-class GivePointsD9View(APIView):
+class RedeemView(BaseView):
 
-    def post(self, request):
-        valid_address = get_valid_address(request.data['consumer_id'])
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).give_points_d9(valid_address, request.data['d9'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.RedeemSerializer
+    action_class = Redeem
 
 
-class GivePointsUSDTView(APIView):
+class GivePointsD9View(BaseView):
 
-    def post(self, request):
-        valid_address = get_valid_address(request.data['consumer_id'])
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).give_points_usdt(valid_address, request.data['usdt'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.GivePointsD9Serializer
+    action_class = GivePointsD9
 
 
-class USDTPaymentView(APIView):
+class GivePointsUSDTView(BaseView):
 
-    def post(self, request):
-        valid_address = get_valid_address(request.data['merchant_id'])
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).send_usdt_payment_to_merchant(valid_address, request.data['usdt'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.GivePointsUSDTSerializer
+    action_class = GivePointsUSDT
 
 
-class D9PaymentView(APIView):
+class D9PaymentView(BaseView):
 
-    def post(self, request):
-        valid_address = get_valid_address(request.data['merchant_id'])
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).send_d9_payment_to_merchant(valid_address, request.data['d9'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.D9PaymentSerializer
+    action_class = D9Payment
 
 
-class GetMerchantExpiryView(APIView):
+class USDTPaymentView(BaseView):
 
-    def post(self, request):
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).get_merchant_expiry(key.ss58_address)
-        print(res.value)
-        # if res.is_success:
-        return Response(status=status.HTTP_200_OK)
-        # return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.USDTPaymentSerializer
+    action_class = USDTPayment
 
 
-class GetAccountView(APIView):
+class GetMerchantExpiryView(BaseView):
 
-    def post(self, request):
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = merchant.Merchant(key).get_account(key.ss58_address)
-        print(res.value)
-        # if res.is_success:
-        return Response(status=status.HTTP_200_OK)
-        # return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+    serializer_class = serializers.GetMerchantExpirySerializer
+    action_class = GetMerchantExpiry
+
+
+class GetAccountView(BaseView):
+
+    serializer_class = serializers.GetAccountSerializer
+    action_class = GetAccount
