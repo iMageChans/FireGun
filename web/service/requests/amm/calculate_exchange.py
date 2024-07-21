@@ -2,35 +2,33 @@ from service.contracts.base_class import Direction, Currency
 from service.utils import keystone, types
 from service.contracts import market_maker
 from service.utils.numbers import format_number
+from service.requests.base import abs_class
 
 
-class CalculateExchange:
+class CalculateExchange(abs_class.Fire):
     def __init__(self, validated_data):
-        try:
-            keypair = keystone.check_keypair(validated_data['keypair'])
-            direction = Direction(Currency(validated_data['from_currency']).value,
-                                  Currency(validated_data['to_currency']).value)
-            from_amount = validated_data['from_amount']
-        except ValueError as err:
-            raise err
-
-        res = market_maker.MarketMaker(keypair).get_reserves()
-        values = types.validate_res(res.value)
-
-        keys = ['d9', 'usdt']
-        data = dict(zip(keys, values))
-        self.d9 = format_number(data['d9'])
-        self.usdt = format_number(data['usdt'], 2)
-
-        if Currency.USDT is Currency(validated_data['from_currency']) and Currency.D9 is Currency(
-                validated_data['to_currency']):
-            self.result = {
-                "totals": "{:.7f}".format(self.usdt / self.d9)[:-1]
-            }
-        else:
-            self.result = {
-                "totals": "{:.7f}".format(self.d9 / self.usdt)[:-1]
-            }
+        super().__init__(validated_data)
+        # direction = Direction(Currency(validated_data['from_currency']).value,
+        #                       Currency(validated_data['to_currency']).value)
+        # self.from_currency = Currency(validated_data['from_currency'])
+        # self.to_currency = Currency(validated_data['to_currency'])
+        self.from_amount = validated_data['from_amount']
+        self.call = market_maker.MarketMaker(self.keypair)
+        self.res = self.call.get_reserves()
 
     def results(self):
-        return self.result
+        values = types.validate_res(self.res.value_serialized)
+        keys = ['d9', 'usdt']
+        data = dict(zip(keys, values))
+        result = {
+            "d9_to_usdt": "{:.7f}".format(format_number(data['usdt'], 2) / format_number(data['d9']))[:-1],
+            "usdt_to_d9": "{:.7f}".format(format_number(data['d9'] / format_number(data['usdt'], 2)))[:-1]
+        }
+        if self.is_success():
+            return result
+        return types.validate_res(self.res.value_serialized)
+
+    def is_success(self):
+        if "Err" in types.validate_res(self.res.value_serialized):
+            return False
+        return True

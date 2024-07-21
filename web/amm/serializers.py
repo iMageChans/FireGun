@@ -12,8 +12,8 @@ class GetLiquidityProviderSerializer(serializers.Serializer):
 
 class AddLiquiditySerializer(serializers.Serializer):
     keypair = serializers.CharField(required=True)
-    usdt_amount = serializers.IntegerField(required=True)
-    d9_amount = serializers.IntegerField(required=True)
+    usdt_amount = serializers.FloatField(required=True)
+    d9_amount = serializers.FloatField(required=True)
 
 
 class RemoveLiquiditySerializer(serializers.Serializer):
@@ -38,13 +38,19 @@ class GetUSDTSerializer(serializers.Serializer):
 
 class CalculateExchangeSerializer(serializers.Serializer):
     keypair = serializers.CharField(required=True)
-    from_currency = serializers.IntegerField(required=True)
-    to_currency = serializers.IntegerField(required=True)
+    from_currency = serializers.IntegerField(required=False)
+    to_currency = serializers.IntegerField(required=False)
     from_amount = serializers.IntegerField(required=False)
 
 
 class EstimateExchangeSerializer(serializers.Serializer):
     keypair = serializers.CharField(required=True)
-    from_currency = serializers.IntegerField(required=True)
-    to_currency = serializers.IntegerField(required=True)
+    from_currency = serializers.IntegerField(required=False)
+    to_currency = serializers.IntegerField(required=False)
     from_amount = serializers.IntegerField(required=True)
+
+
+class CheckUSDTBalanceSerializer(serializers.Serializer):
+    keypair = serializers.CharField(required=True)
+    account_id = serializers.CharField(required=True)
+    amount = serializers.IntegerField(required=True)

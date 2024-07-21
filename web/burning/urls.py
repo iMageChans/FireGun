@@ -2,9 +2,8 @@ from django.urls import path
 from .views import BurningTotalView, BurningAncestorsView, BurningWithdrawView, BurningView
 
 urlpatterns = [
-    path('', BurningView.as_view(), name='burning'),
+    path('token/', BurningView.as_view(), name='burning-token'),
     path('withdraw/', BurningWithdrawView.as_view(), name='burning-withdraw'),
     path('ancestors/', BurningAncestorsView.as_view(), name='burning-ancestors'),
-    path('total/', BurningTotalView.as_view(), name='burning-total'),
-
+    path('totals/', BurningTotalView.as_view(), name='burning-total'),
 ]

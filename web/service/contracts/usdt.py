@@ -12,21 +12,21 @@ class USDT(D9Contract):
             "spender": spender,
             "value": amount
         }
-        return self.contract_exec('psp22::approve', params)
+        return self.contract_exec('PSP22::approve', params)
 
     def decrease_allowance(self, spender: str, delta_value: int):
         params = {
             "spender": spender,
             "delta_value": delta_value
         }
-        return self.contract_exec('psp22::decrease_allowance', params)
+        return self.contract_exec('PSP22::decrease_allowance', params)
 
     def increase_allowance(self, spender: str, delta_value: int):
         params = {
             "spender": spender,
             "delta_value": delta_value
         }
-        return self.contract_exec('psp22::increase_allowance', params)
+        return self.contract_exec('PSP22::increase_allowance', params)
 
     def transfer(self, to: str, value: int):
         params = {
@@ -34,7 +34,7 @@ class USDT(D9Contract):
             "value": value,
             "data": "0x"
         }
-        return self.contract_exec('psp22::transfer', params)
+        return self.contract_exec('PSP22::transfer', params)
 
     def transfer_from(self, from_: str, to: str, value: int):
         params = {
@@ -43,10 +43,10 @@ class USDT(D9Contract):
             "value": value,
             "data": "0x"
         }
-        return self.contract_exec('psp22::transfer_from', params)
+        return self.contract_exec('PSP22::transfer_from', params)
 
     def balance_of(self, owner: str):
-        return self.contract_exec('psp22::balance_of', {'owner': owner})
+        return self.contract_read('PSP22::balance_of', {'owner': owner})
 
     def total_supply(self):
-        return self.contract_read('psp22::total_supply')
+        return self.contract_read('PSP22::total_supply')

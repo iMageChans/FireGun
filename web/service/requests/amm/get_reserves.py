@@ -5,20 +5,21 @@ from service.utils import numbers
 
 class GetReserves:
     def __init__(self, validated_data):
-        try:
-            keypair = keystone.check_keypair(validated_data['keypair'])
-        except ValueError as err:
-            raise err
-        res = market_maker.MarketMaker(keypair).get_reserves().value
-        values = types.validate_res(res)
-        keys = ['d9', 'usdt']
-        data = dict(zip(keys, values))
-        self.d9 = data['d9']
-        self.usdt = data['usdt']
+        keypair = keystone.check_keypair(validated_data['keypair'])
+        self.call = market_maker.MarketMaker(keypair)
+        self.res = self.call.get_reserves()
 
     def results(self):
+        values = types.validate_res(self.res.value_serialized)
+        keys = ['d9', 'usdt']
+        data = dict(zip(keys, values))
         return {
-            "d9": "{:.3f}".format(numbers.format_number(self.d9))[:-1],
-            "usdt": "{:.3f}".format(numbers.format_number(self.usdt, 2))[:-1],
+            "d9": "{:.3f}".format(numbers.format_number(data['d9']))[:-1],
+            "usdt": "{:.3f}".format(numbers.format_number(data['usdt'], 2))[:-1],
         }
+
+    def is_success(self):
+        if "Err" in types.validate_res(self.res.value_serialized):
+            return False
+        return True
 

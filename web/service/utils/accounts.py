@@ -14,4 +14,4 @@ def get_valid_address(address_with_prefix):
             return None
     else:
         print("Invalid prefix")
-        return None
+        return address_with_prefix

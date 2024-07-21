@@ -10,13 +10,13 @@ class MainMining(D9Contract):
     def burn(self, burn_beneficiary: str, burn_amount: int):
         params = {
             "burn_beneficiary": burn_beneficiary,
-            "burn_contract": config.get('BURN_CONTRACT')
+            "burn_contract": config.get('BURN_MINING_CONTRACT')
         }
         return self.contract_exec('burn', params, value=burn_amount)
 
     def withdraw(self):
         params = {
-            "burn_contract": config.get('BURN_CONTRACT'),
+            "burn_contract": config.get('BURN_MINING_CONTRACT'),
         }
         self.contract_exec('withdraw', params)
 
@@ -28,3 +28,9 @@ class MainMining(D9Contract):
 
     def get_total_burned(self):
         return self.contract_read('get_total_burned')
+
+    def get_portfolio(self, account_id: str):
+        params = {
+            "account_id": account_id,
+        }
+        return self.contract_read('get_portfolio', params)

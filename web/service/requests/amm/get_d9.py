@@ -1,34 +1,23 @@
-from substrateinterface.exceptions import ContractReadFailedException
-
-from service.utils import keystone
-from service.contracts import market_maker, usdt
+from service.utils import types
+from service.contracts import market_maker
 from service.utils import numbers
+from service.requests.base import abs_class
 
 
-class GetD9:
+class GetD9(abs_class.Fire):
     def __init__(self, validated_data):
-        try:
-            keypair = keystone.check_keypair(validated_data['keypair'])
-            amount = numbers.to_number(validated_data['usdt'], 2)
-        except ValueError as err:
-            raise err
-
-        try:
-            approve = usdt.USDT(keypair).approve(keypair.ss58_address, amount)
-            print(approve.is_success)
-            allowance = usdt.USDT(keypair).increase_allowance(keypair.ss58_address, amount)
-            print(allowance.is_success)
-            self.res = market_maker.MarketMaker(keypair).get_d9(amount)
-            print(self.res.is_success)
-            # print("error_message:", self.res.error_message.values()[3])
-            # print("extrinsic", self.res.extrinsic)
-            # print(self.res.is_success)
-            # print(self.res.total_fee_amount)
-            # print(self.res.contract_events)
-            # print(self.res.triggered_events)
-            # print(self.res.substrate.block_hash)
-        except Exception as err:
-            print(err)
+        super().__init__(validated_data)
+        amount = numbers.to_number(validated_data['usdt'], 2)
+        self.call = market_maker.MarketMaker(self.keypair)
+        allowance = self.add_allowances(self.call.contract.contract_address, amount)
+        if allowance.is_success:
+            self.res = self.call.get_d9(amount)
+            self.remove_allowances(self.call.contract.contract_address, amount)
 
     def results(self):
-        return self.res
+        return types.validate_res(self.res.value_serialized)
+
+    def is_success(self):
+        if "Err" in types.validate_res(self.res.value_serialized):
+            return False
+        return True

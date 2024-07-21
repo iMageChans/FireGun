@@ -4,6 +4,7 @@ from rest_framework import status
 from service.utils import keypair
 from service.contracts import usdt
 from service.utils.accounts import get_valid_address
+from service.utils.numbers import format_number
 
 
 class ApproveView(APIView):
@@ -81,10 +82,11 @@ class BalanceOfView(APIView):
             key = keypair.get_keypair(request.data['keypair'])
         except ValueError:
             return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = usdt.USDT(key).balance_of(owner=request.data['owner'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+        res = usdt.USDT(key).balance_of(owner=get_valid_address(request.data['owner']))
+        data = {'data': format_number(res.value['result']['Ok']['data']['Ok'], 2)}
+        return Response(status=status.HTTP_200_OK, data=data)
+
+    # format_number(data, 2)
 
 
 class TotalSupplyView(APIView):

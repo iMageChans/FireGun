@@ -15,4 +15,3 @@ def get_keypair(data):
             raise ValueError("ECDSA mnemonic only supports english")
     elif isinstance(data, str):
         return Keypair.create_from_private_key(data, ss58_format=9)
-

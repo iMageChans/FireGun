@@ -3,21 +3,23 @@ from rest_framework.response import Response
 from rest_framework import status
 from service.utils import keypair
 from service.contracts import main_mining
-from service.utils.accounts import get_valid_address
+from burning import serializers
+from service.requests.burning.burning import Token
 
 
 class BurningView(APIView):
 
     def post(self, request):
-        valid_address = get_valid_address(request.data['account_id'])
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = main_mining.MainMining(key).burn(valid_address, request.data['amount'])
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+        serializer = serializers.BurningSerializer(data=request.data)
+        if serializer.is_valid():
+            res = Token(serializer.validated_data)
+            data = res.results()
+            if res.is_success:
+                return Response(status=status.HTTP_200_OK, data={'data': data})
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'data': data})
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
 
 class BurningWithdrawView(APIView):
