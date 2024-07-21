@@ -83,7 +83,7 @@ class VotingExtrinsics(PalletExtrinsicsBase):
     def __init__(self):
         super().__init__('D9NodeVoting')
 
-    def add_voting_interest(self, beneficiary_voter, amount_to_burn):
+    def add_voting_interest(self, beneficiary_voter: str, amount_to_burn: int):
         """
         adds voting interest
         Args:
@@ -143,7 +143,7 @@ class VotingExtrinsics(PalletExtrinsicsBase):
            """
         self.compose_call("RedistributeVotes", {'from': from_candidate, 'to': to_candidate})
 
-    def remove_candidacy(self, candidate_id: str):
+    def remove_candidacy(self):
         """
         removes candidacy
         Args:

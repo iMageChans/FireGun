@@ -1,4 +1,3 @@
-from service.utils import keystone
 from service.pallets import balances
 from service.utils.accounts import get_valid_address
 from service.utils import numbers
