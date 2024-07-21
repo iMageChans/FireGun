@@ -23,8 +23,7 @@ class BalancesQueries(PalletQueriesBase):
         Returns:
              list: locks
         """
-        result = self.compose_query('Locks', [account_id])
-        return result.value
+        return self.compose_query('Locks', [account_id])
 
 
 class BalancesExtrinsics(PalletExtrinsicsBase):
