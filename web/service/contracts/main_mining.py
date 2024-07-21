@@ -18,7 +18,7 @@ class MainMining(D9Contract):
         params = {
             "burn_contract": config.get('BURN_MINING_CONTRACT'),
         }
-        self.contract_exec('withdraw', params)
+        return self.contract_exec('withdraw', params)
 
     def get_ancestors(self, account_id: str):
         params = {

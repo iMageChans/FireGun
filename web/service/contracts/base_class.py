@@ -1,8 +1,4 @@
 import os
-
-from scalecodec.types import GenericContractExecResult
-from substrateinterface.base import ExtrinsicReceipt
-
 from service.utils.interface import D9Interface
 from substrateinterface.contracts import ContractInstance, ContractExecutionReceipt, ContractMetadata
 from substrateinterface import Keypair

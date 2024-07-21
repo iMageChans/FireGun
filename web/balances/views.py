@@ -12,11 +12,12 @@ class GetBalances(APIView):
     def post(self, request):
         serializer = serializers.GetBalancesSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                res = GetBalance(serializer.validated_data)
-                return Response(status=status.HTTP_200_OK, data=res.results())
-            except Exception as err:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': err})
+            res = GetBalance(serializer.validated_data)
+            data = res.results()
+            if res.is_success():
+                return Response(status=status.HTTP_200_OK, data={'data': data})
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'data': data})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
@@ -26,11 +27,12 @@ class Locks(APIView):
     def post(self, request):
         serializer = serializers.GetBalancesSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                res = GetLocks(serializer.validated_data)
-                return Response(status=status.HTTP_200_OK, data=res.results())
-            except Exception as err:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': err})
+            res = GetLocks(serializer.validated_data)
+            data = res.results()
+            if res.is_success():
+                return Response(status=status.HTTP_200_OK, data={'data': data})
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'data': data})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
 
@@ -40,13 +42,11 @@ class Transfers(APIView):
     def post(self, request):
         serializer = serializers.TransferSerializer(data=request.data)
         if serializer.is_valid():
-            try:
-                res = Transfer(serializer.validated_data)
-                if res.results().is_success:
-                    return Response(status=status.HTTP_200_OK, data={'message': 'Transaction success'})
-                else:
-                    return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'Transaction failed'})
-            except Exception as err:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': err})
+            res = Transfer(serializer.validated_data)
+            data = res.results()
+            if res.is_success():
+                return Response(status=status.HTTP_200_OK, data={'data': data})
+            else:
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'data': data})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)

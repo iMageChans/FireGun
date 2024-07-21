@@ -1,58 +1,32 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from service.utils import keypair
-from service.contracts import main_mining
+from base.views import BaseView
 from burning import serializers
 from service.requests.burning.burning import Token
+from service.requests.burning.withdraw import Withdraw
+from service.requests.burning.get_ancestors import GetAncestors
+from service.requests.burning.get_total_burned import GetTotalBurned
+from service.requests.burning.get_portfolio import GetPortfolio
 
 
-class BurningView(APIView):
-
-    def post(self, request):
-        serializer = serializers.BurningSerializer(data=request.data)
-        if serializer.is_valid():
-            res = Token(serializer.validated_data)
-            data = res.results()
-            if res.is_success:
-                return Response(status=status.HTTP_200_OK, data={'data': data})
-            else:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={'data': data})
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)
+class BurningView(BaseView):
+    serializer_class = serializers.BurningSerializer
+    action_class = Token
 
 
-class BurningWithdrawView(APIView):
-    def post(self, request):
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = main_mining.MainMining(key).withdraw()
-        if res.is_success:
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+class BurningWithdrawView(BaseView):
+    serializer_class = serializers.BurningWithdrawSerializer
+    action_class = Withdraw
 
 
-class BurningAncestorsView(APIView):
-    def post(self, request):
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = main_mining.MainMining(key).get_ancestors(key.ss58_address)
-        print(res.value)
-        # if res.is_success:
-        return Response(status=status.HTTP_200_OK)
-        # return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data={'error': 'Transaction failed'})
+class BurningAncestorsView(BaseView):
+    serializer_class = serializers.GetAncestorsSerializer
+    action_class = GetAncestors
 
 
-class BurningTotalView(APIView):
-    def post(self, request):
-        try:
-            key = keypair.get_keypair(request.data['keypair'])
-        except ValueError:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'error': ValueError})
-        res = main_mining.MainMining(key).get_total_burned()
-        data = {'total': res.value['result']['Ok']['data']['Ok']}
-        return Response(status=status.HTTP_200_OK, data=data)
+class BurningTotalView(BaseView):
+    serializer_class = serializers.GetTotalBurnedSerializer
+    action_class = GetTotalBurned
+
+
+class BurningPortfolioView(BaseView):
+    serializer_class = serializers.GetPortfolioSerializer
+    action_class = GetPortfolio

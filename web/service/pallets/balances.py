@@ -13,8 +13,7 @@ class BalancesQueries(PalletQueriesBase):
         Returns:
              float: balance
         """
-        result = self.chain_interface.query('System', 'Account', [account_id])
-        return result.value['data']['free']
+        return self.chain_interface.query('System', 'Account', [account_id])
 
     def get_locks(self, account_id: str):
         """
