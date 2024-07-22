@@ -20,7 +20,7 @@ class MarketMaker(D9Contract):
         params = {
             "usdt_liquidity": usdt_amount,
         }
-        return self.contract_read('add_liquidity', params, value=d9_amount)
+        return self.contract_exec('add_liquidity', params, value=d9_amount)
 
     def remove_liquidity(self):
         return self.contract_read('remove_liquidity')
