@@ -1,22 +1,28 @@
 from service.contracts import main_mining
 from service.utils import numbers
-from service.utils.accounts import get_valid_address
-from service.utils import types
 from service.requests.base import abs_class
+from burning.tasks import *
+from users_profile.tasks import *
 
 
 class Token(abs_class.Fire):
     def __init__(self, validated_data):
         super().__init__(validated_data)
-        account_id = get_valid_address(validated_data['account_id'])
         amount = numbers.to_number(validated_data['amount'])
         self.call = main_mining.MainMining(self.keypair)
-        self.res = self.call.burn(burn_beneficiary=account_id, burn_amount=amount)
+        self.res = self.call.burn(burn_beneficiary=self.account_id.get_valid_address(), burn_amount=amount)
 
     def results(self):
-        return types.validate_res(self.call.gas_predit_result.value_serialized)
+        if self.res.is_success:
+
+            data = extractor.get_burning_portfolio(self.call.gas_predit_result.value_serialized)
+            data.update({"account_id": self.account_id.mate_data_address()})
+
+            update_or_create_user_burning_profile_celery.delay(data)
+            update_or_create_d9_balance_celery.delay(data['account_id'])
+
+            return extractor.get_transfer_data(self.res)
+        return self.call.gas_predit_result.value_serialized
 
     def is_success(self):
-        if "Err" in types.validate_res(self.call.gas_predit_result.value_serialized):
-            return False
-        return True
+        return self.res.is_success

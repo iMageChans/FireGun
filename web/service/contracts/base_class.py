@@ -17,9 +17,10 @@ class D9Contract(ContractInstance):
                 'abis',
                 metadata_file
             ),
-            substrate=D9Interface(url=config.get('MAIN_NET_URL'))
+            substrate=D9Interface(url=config.get('TEST_NET_URL'))
         )
         self.keypair = keypair
+        self.gas_predit_result = None
 
     def contract_exec(self, call_name: str, call_params: dict | None = None, value: int = 0):
         return self.exec(self.keypair, call_name, call_params, value)
@@ -31,25 +32,6 @@ class D9Contract(ContractInstance):
              value: int = 0, gas_limit: Optional[dict] = None, storage_deposit_limit: int = None,
              wait_for_inclusion: bool = True, wait_for_finalization: bool = False
              ) -> ContractExecutionReceipt:
-        """
-        Executes provided message by creating and submitting an extrinsic. To get a gas prediction or perform a
-        'dry-run' of executing this message, see `ContractInstance.read`.
-
-        Parameters
-        ----------
-        keypair
-        method: name of message to execute
-        args: arguments of message in {'name': value} format
-        value: value to send when executing the message
-        gas_limit: dict repesentation of `WeightV2` type. When omited the gas limit will be calculated with a `read()`
-        storage_deposit_limit: The maximum amount of balance that can be charged to pay for the storage consumed
-        wait_for_inclusion: wait until extrinsic is included in a block (only works for websocket connections)
-        wait_for_finalization: wait until extrinsic is finalized (only works for websocket connections)
-
-        Returns
-        -------
-        ContractExecutionReceipt
-        """
 
         if gas_limit is None:
             self.gas_predit_result = self.contract.read(keypair, method, args, value)
@@ -79,17 +61,14 @@ class D9Contract(ContractInstance):
 
 
 class Currency(Enum):
-    D9 = 0
-    USDT = 1
+    D9 = 'D9'
+    USDT = 'USDT'
 
 
 class Direction:
     def __init__(self, from_currency: Currency, to_currency: Currency):
         self.from_currency = from_currency
         self.to_currency = to_currency
-
-    def encode(self):
-        return self.from_currency.value | self.to_currency.value
 
     def __eq__(self, other):
         if isinstance(other, Direction):
@@ -105,3 +84,7 @@ class Direction:
 
     def __deepcopy__(self, memodict={}):
         return Direction(self.from_currency, self.to_currency)
+
+    def encode(self):
+        return [self.from_currency.value, self.to_currency.value]
+

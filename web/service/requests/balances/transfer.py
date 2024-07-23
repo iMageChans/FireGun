@@ -1,6 +1,7 @@
 from service.pallets import balances
 from service.utils.accounts import get_valid_address
 from service.utils import numbers
+from service.utils.json import extractor
 from service.requests.base import abs_class
 
 
@@ -15,7 +16,7 @@ class Transfer(abs_class.Fire):
         self.res = balances.BalancesExtrinsics().chain_interface.submit_extrinsic(self.extrinsic, wait_for_inclusion=True)
 
     def results(self):
-        return self.res.extrinsic.value_serialized
+        return extractor.get_transfer_data(self.res)
 
     def is_success(self):
         return self.res.is_success

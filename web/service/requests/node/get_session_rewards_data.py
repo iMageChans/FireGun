@@ -1,6 +1,7 @@
 from service.contracts import node_reward
 from service.utils import types
 from service.requests.base import abs_class
+from service.utils.json import extractor
 
 
 class GetSessionRewardsData(abs_class.Fire):
@@ -11,9 +12,12 @@ class GetSessionRewardsData(abs_class.Fire):
         self.res = self.call.get_session_rewards_data(session_index)
 
     def results(self):
-        return types.validate_res(self.call.gas_predit_result.value_serialized)
+        return {
+            "provider": extractor.get_data_or_err(self.res.value_serialized)
+        }
 
     def is_success(self):
-        if "Err" in types.validate_res(self.call.gas_predit_result.value_serialized):
-            return False
-        return True
+        extractor.get_data_or_err(self.res.value_serialized)
+        if extractor.check:
+            return True
+        return False

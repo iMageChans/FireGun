@@ -1,4 +1,11 @@
 from rest_framework import serializers
+from usdt.models import *
+
+
+class USDTBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = USDTBalance
+        fields = '__all__'
 
 
 class ApproveSerializer(serializers.Serializer):
@@ -34,7 +41,7 @@ class TransferFromSerializer(serializers.Serializer):
 
 class BalanceOfSerializer(serializers.Serializer):
     keypair = serializers.CharField(required=True)
-    owner = serializers.CharField(required=True)
+    account_id = serializers.CharField(required=True)
 
 
 class TotalSupplySerializer(serializers.Serializer):

@@ -13,6 +13,9 @@ class EnvConfig:
     def get(self, key, default=None):
         return self.env(key, default=default)
 
+    def get_private_key(self):
+        return self.get('WEB_PRIVATE_KEY')
+
 
 
 config = EnvConfig()

@@ -1,25 +1,24 @@
-from service.utils import keystone, types
+from amm.models import CurrencyReserves
+from service.utils import keystone
+from service.utils.json import extractor
 from service.contracts import market_maker
 from service.utils import numbers
 
 
 class GetReserves:
     def __init__(self, validated_data):
-        keypair = keystone.check_keypair(validated_data['keypair'])
-        self.call = market_maker.MarketMaker(keypair)
-        self.res = self.call.get_reserves()
+        super().__init__(validated_data)
 
     def results(self):
-        values = types.validate_res(self.res.value_serialized)
-        keys = ['d9', 'usdt']
-        data = dict(zip(keys, values))
+        first_currency_reserve = CurrencyReserves.objects.first()
         return {
-            "d9": "{:.3f}".format(numbers.format_number(data['d9']))[:-1],
-            "usdt": "{:.3f}".format(numbers.format_number(data['usdt'], 2))[:-1],
+            "d9": "{:.3f}".format(numbers.format_number(first_currency_reserve.d9))[:-1],
+            "usdt": "{:.3f}".format(numbers.format_number(first_currency_reserve.usdt, 2))[:-1],
         }
 
     def is_success(self):
-        if "Err" in types.validate_res(self.res.value_serialized):
-            return False
-        return True
+        first_currency_reserve = CurrencyReserves.objects.first()
+        if first_currency_reserve is not None:
+            return True
+        return False
 

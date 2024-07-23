@@ -1,7 +1,7 @@
 from service.contracts import merchant
-from service.utils import types, numbers
 from service.requests.base import abs_class
 from service.utils.accounts import get_valid_address
+from users_profile.tasks import *
 
 
 class GivePointsD9(abs_class.Fire):
@@ -13,9 +13,8 @@ class GivePointsD9(abs_class.Fire):
         self.res = self.call.give_points_d9(consumer_id, d9_amount)
 
     def results(self):
-        return types.validate_res(self.call.gas_predit_result.value_serialized)
+        update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+        return extractor.get_transfer_data(self.res)
 
     def is_success(self):
-        if "Err" in types.validate_res(self.call.gas_predit_result.value_serialized):
-            return False
-        return True
+        return self.res.is_success

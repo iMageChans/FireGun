@@ -1,4 +1,11 @@
 from rest_framework import serializers
+from balances.models import D9Balance
+
+
+class D9BalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = D9Balance
+        fields = '__all__'
 
 
 class GetBalancesSerializer(serializers.Serializer):

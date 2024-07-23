@@ -1,8 +1,8 @@
-from service.utils import types
 from service.contracts import market_maker
 from service.utils.accounts import get_valid_address
 from service.utils import numbers
 from service.requests.base import abs_class
+from service.utils.json import extractor
 
 
 class CheckUSDTBalance(abs_class.Fire):
@@ -14,9 +14,9 @@ class CheckUSDTBalance(abs_class.Fire):
         self.res = self.call.check_usdt_balance(valid_address, amount)
 
     def results(self):
-        return types.validate_res(self.res.value_serialized)
+        values = extractor.get_data_or_err(self.res.value_serialized)
+        return values
 
     def is_success(self):
-        if "Err" in types.validate_res(self.res.value_serialized):
-            return False
-        return True
+        extractor.get_data_or_err(self.res.value_serialized)
+        return extractor.check

@@ -1,6 +1,6 @@
-from service.utils import keystone, types
 from service.contracts import market_maker
 from service.requests.base import abs_class
+from users_profile.tasks import *
 
 
 class RemoveLiquidity(abs_class.Fire):
@@ -10,9 +10,9 @@ class RemoveLiquidity(abs_class.Fire):
         self.res = self.call.remove_liquidity()
 
     def results(self):
-        return types.validate_res(self.res.value_serialized)
+        update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+        update_or_create_usdt_balance_celery.delay(self.account_id.mate_data_address())
+        return extractor.get_transfer_data(self.res)
 
     def is_success(self):
-        if "Err" in types.validate_res(self.res.value_serialized):
-            return False
-        return True
+        return self.res.is_success

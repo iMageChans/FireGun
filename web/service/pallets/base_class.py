@@ -1,10 +1,9 @@
 from service.utils.env import config
 from service.utils.interface import D9Interface
-from substrateinterface import Keypair
 
 
 d9_interface = D9Interface(
-    url=config.get('MAIN_NET_URL'),
+    url=config.get('TEST_NET_URL'),
     ss58_format=9,
     type_registry_preset='polkadot'
 )

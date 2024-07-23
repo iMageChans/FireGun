@@ -1,6 +1,6 @@
 from service.contracts import market_maker
-from service.utils import numbers
 from service.requests.base import abs_class
+from users_profile.tasks import *
 
 
 class GetD9(abs_class.Fire):
@@ -15,7 +15,9 @@ class GetD9(abs_class.Fire):
 
     def results(self):
         if self.allowance.is_success:
-            return self.call.gas_predit_result.value_serialized
+            update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+            update_or_create_usdt_balance_celery.delay(self.account_id.mate_data_address())
+            return extractor.get_transfer_data(self.res)
         return self.allowance.extrinsic.value
 
     def is_success(self):

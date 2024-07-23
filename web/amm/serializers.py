@@ -38,15 +38,15 @@ class GetUSDTSerializer(serializers.Serializer):
 
 class CalculateExchangeSerializer(serializers.Serializer):
     keypair = serializers.CharField(required=True)
-    from_currency = serializers.IntegerField(required=False)
-    to_currency = serializers.IntegerField(required=False)
-    from_amount = serializers.IntegerField(required=False)
+    from_currency = serializers.CharField(required=True)
+    to_currency = serializers.CharField(required=True)
+    from_amount = serializers.IntegerField(required=True)
 
 
 class EstimateExchangeSerializer(serializers.Serializer):
     keypair = serializers.CharField(required=True)
-    from_currency = serializers.IntegerField(required=False)
-    to_currency = serializers.IntegerField(required=False)
+    from_currency = serializers.CharField(required=True)
+    to_currency = serializers.CharField(required=True)
     from_amount = serializers.IntegerField(required=True)
 
 

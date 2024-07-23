@@ -1,25 +1,22 @@
-from service.pallets import balances
-from service.utils.accounts import get_valid_address
-from service.utils import numbers
+from django.core.exceptions import ObjectDoesNotExist
+
 from service.requests.base import abs_class
+from balances.serializers import D9BalanceSerializer
+from service.tools.celery_update_or_create import *
 
 
 class GetBalance(abs_class.Fire):
     def __init__(self, validated_data):
         super().__init__(validated_data)
-        self.valid_address = get_valid_address(validated_data['account_id'])
-        self.call = balances.BalancesQueries()
-        self.res = self.call.get_balance(self.valid_address)
+        try:
+            self.d9_balance = D9Balance.objects.get(pk=self.account_id.mate_data_address())
+        except ObjectDoesNotExist:
+            self.d9_balance = update_or_create_d9_balance(self.account_id.mate_data_address())
 
     def results(self):
-        value = self.res.value_serialized['data']['free']
-        if self.is_success():
-            return {
-                "totals": "{:.5f}".format(numbers.format_number(value))[:-1]
-            }
-        return self.res.value_serialized['data']
+        if self.d9_balance is None:
+            return None
+        return D9BalanceSerializer(self.d9_balance).data
 
     def is_success(self):
-        if "Err" in self.res.value_serialized['data']:
-            return False
-        return True
+        return self.d9_balance is not None

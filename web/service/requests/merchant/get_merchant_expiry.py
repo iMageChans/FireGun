@@ -2,6 +2,7 @@ from service.contracts import merchant
 from service.utils import types
 from service.requests.base import abs_class
 from service.utils.accounts import get_valid_address
+from service.utils.json import extractor
 
 
 class GetMerchantExpiry(abs_class.Fire):
@@ -12,9 +13,12 @@ class GetMerchantExpiry(abs_class.Fire):
         self.res = self.call.get_merchant_expiry(account_id)
 
     def results(self):
-        return types.validate_res(self.call.gas_predit_result.value_serialized)
+        return {
+            "provider": extractor.get_data_or_err(self.res.value_serialized)
+        }
 
     def is_success(self):
-        if "Err" in types.validate_res(self.call.gas_predit_result.value_serialized):
-            return False
-        return True
+        extractor.get_data_or_err(self.res.value_serialized)
+        if extractor.check:
+            return True
+        return False

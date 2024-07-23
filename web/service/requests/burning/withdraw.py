@@ -1,7 +1,6 @@
-from service.utils import keystone
 from service.contracts import main_mining
-from service.utils import types
 from service.requests.base import abs_class
+from users_profile.tasks import *
 
 
 class Withdraw(abs_class.Fire):
@@ -11,7 +10,12 @@ class Withdraw(abs_class.Fire):
         self.res = self.call.withdraw()
 
     def results(self):
-        return types.validate_res(self.call.gas_predit_result.value_serialized)
+        if self.res.is_success:
+            try:
+                update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+            except Exception as e:
+                return e
+            return extractor.get_transfer_data(self.res)
 
     def is_success(self):
         return self.res.is_success

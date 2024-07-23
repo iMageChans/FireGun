@@ -1,6 +1,6 @@
 from service.contracts import merchant
-from service.utils import types
 from service.requests.base import abs_class
+from users_profile.tasks import *
 
 
 class Redeem(abs_class.Fire):
@@ -10,9 +10,8 @@ class Redeem(abs_class.Fire):
         self.res = self.call.redeem_d9()
 
     def results(self):
-        return types.validate_res(self.call.gas_predit_result.value_serialized)
+        update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+        return extractor.get_transfer_data(self.res)
 
     def is_success(self):
-        if "Err" in types.validate_res(self.call.gas_predit_result.value_serialized):
-            return False
-        return True
+        return self.res.is_success

@@ -1,8 +1,7 @@
-from service.utils import keystone, types
 from service.contracts import market_maker
-from service.utils import numbers
 from service.utils.accounts import get_valid_address
 from service.requests.base import abs_class
+from service.utils.json import extractor
 
 
 class GetLiquidityProvider(abs_class.Fire):
@@ -13,9 +12,10 @@ class GetLiquidityProvider(abs_class.Fire):
         self.res = self.call.get_liquidity_provider(valid_address)
 
     def results(self):
-        return types.validate_res(self.res.value_serialized)
+        return {
+            "provider": extractor.get_data_or_err(self.res.value_serialized)
+        }
 
     def is_success(self):
-        if "Err" in types.validate_res(self.res.value_serialized):
-            return False
-        return True
+        extractor.get_data_or_err(self.res.value_serialized)
+        return extractor.check

@@ -1,8 +1,6 @@
-from service.utils import types
 from service.contracts import market_maker
-from service.utils import numbers
 from service.requests.base import abs_class
-from service.utils.env import config
+from users_profile.tasks import *
 
 
 class AddLiquidity(abs_class.Fire):
@@ -13,13 +11,12 @@ class AddLiquidity(abs_class.Fire):
         self.call = market_maker.MarketMaker(self.keypair)
         self.add_allowances(self.call.contract.contract_address, usdt_amount)
         self.add_allowances(config.get('USDT_CONTRACT'), usdt_amount)
-        print("USDT_CONTRACT:", config.get('USDT_CONTRACT'))
-        print("AMM_CONTRACT:", self.call.contract.contract_address)
         self.res = self.call.add_liquidity(usdt_amount=usdt_amount, d9_amount=d9_amount)
 
     def results(self):
-        return self.call.gas_predit_result.value_serialized
+        update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+        update_or_create_usdt_balance_celery.delay(self.account_id.mate_data_address())
+        return extractor.get_transfer_data(self.res)
 
     def is_success(self):
-        print(self.res.is_success)
         return self.res.is_success

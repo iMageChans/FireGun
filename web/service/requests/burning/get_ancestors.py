@@ -2,6 +2,7 @@ from service.utils import types
 from service.contracts import main_mining
 from service.utils.accounts import get_valid_address
 from service.requests.base import abs_class
+from service.utils.json import extractor
 
 
 class GetAncestors(abs_class.Fire):
@@ -12,9 +13,9 @@ class GetAncestors(abs_class.Fire):
         self.res = self.call.get_ancestors(valid_address)
 
     def results(self):
-        return types.validate_res(self.res.value_serialized)
+        values = extractor.get_data_or_err(self.res.value_serialized)
+        return values
 
     def is_success(self):
-        if "Err" in types.validate_res(self.res.value_serialized):
-            return False
-        return True
+        extractor.get_data_or_err(self.res.value_serialized)
+        return extractor.check

@@ -12,9 +12,9 @@ class BaseView(APIView):
         if serializer.is_valid():
             res = self.action_class(serializer.validated_data)
             data = res.results()
-            if res.is_success:
-                return Response(status=status.HTTP_200_OK, data={'data': data})
+            if res.is_success():
+                return Response(status=status.HTTP_200_OK, data={'results': data})
             else:
-                return Response(status=status.HTTP_400_BAD_REQUEST, data={'data': data})
+                return Response(status=status.HTTP_400_BAD_REQUEST, data={'results': data})
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, data=serializer.errors)

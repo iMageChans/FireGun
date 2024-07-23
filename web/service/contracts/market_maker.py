@@ -23,7 +23,7 @@ class MarketMaker(D9Contract):
         return self.contract_exec('add_liquidity', params, value=d9_amount)
 
     def remove_liquidity(self):
-        return self.contract_read('remove_liquidity')
+        return self.contract_exec('remove_liquidity')
 
     def check_new_liquidity(self, usdt_liquidity: int, d9_liquidity: int):
         params = {
@@ -39,16 +39,16 @@ class MarketMaker(D9Contract):
         return self.contract_exec('get_d9', params)
 
     def get_usdt(self, d9_amount: int):
-        return self.contract_read('get_usdt', value=d9_amount)
+        return self.contract_exec('get_usdt', value=d9_amount)
 
-    def calculate_exchange(self, direction: Direction, from_amount: int):
+    def calculate_exchange(self, direction, from_amount: int):
         params = {
             "direction": direction,
             "amount_0": from_amount
         }
         return self.contract_read('calculate_exchange', params)
 
-    def estimate_exchange(self, direction: Direction, from_amount: int):
+    def estimate_exchange(self, direction, from_amount: int):
         params = {
             "direction": direction,
             "amount_0": from_amount
