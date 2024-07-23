@@ -1,8 +1,7 @@
 from service.contracts import merchant
-from service.utils import types, numbers
 from service.requests.base import abs_class
 from service.utils.accounts import get_valid_address
-from service.utils.json import extractor
+from users_profile.tasks import *
 
 
 class USDTPayment(abs_class.Fire):
@@ -14,6 +13,7 @@ class USDTPayment(abs_class.Fire):
         self.res = self.call.send_usdt_payment_to_merchant(merchant_id, usdt_amount)
 
     def results(self):
+        update_or_create_usdt_balance_celery.delay(self.account_id.mate_data_address())
         return extractor.get_transfer_data(self.res)
 
     def is_success(self):
