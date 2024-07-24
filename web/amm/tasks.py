@@ -8,7 +8,7 @@ from celery import shared_task
 
 
 @shared_task
-def get_currency_reserves():
+def get_currency_reserves_celery():
     private_key = config.get_private_key()
     keypair = Keypair.create_from_private_key(private_key, ss58_format=9)
     extrinsic = market_maker.MarketMaker(keypair).get_reserves()

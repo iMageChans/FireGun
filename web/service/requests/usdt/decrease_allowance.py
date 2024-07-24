@@ -16,12 +16,9 @@ class DecreaseAllowance(abs_class.Fire):
         self.res = self.call.decrease_allowance(spender, delta_value)
 
     def results(self):
-        return {
-            "provider": extractor.get_data_or_err(self.res.value_serialized)
-        }
+        if self.res.is_success:
+            return extractor.get_transfer_data(self.res)
+        return self.res.error_message
 
     def is_success(self):
-        extractor.get_data_or_err(self.res.value_serialized)
-        if extractor.check:
-            return True
-        return False
+        return self.res.is_success

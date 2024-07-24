@@ -1,22 +1,16 @@
-from service.contracts import node_reward
-from service.utils import types
 from service.requests.base import abs_class
-from service.utils.json import extractor
+from node.models import VoteLimit
 
 
 class GetVoteLimit(abs_class.Fire):
     def __init__(self, validated_data):
         super().__init__(validated_data)
-        self.call = node_reward.NodeReward(self.keypair)
-        self.res = self.call.get_vote_limit()
+        self.vote_limit = VoteLimit.objects.all().first()
 
     def results(self):
-        return {
-            "provider": extractor.get_data_or_err(self.res.value_serialized)
-        }
+        return self.vote_limit.totals
 
     def is_success(self):
-        extractor.get_data_or_err(self.res.value_serialized)
-        if extractor.check:
+        if self.vote_limit is not None:
             return True
         return False

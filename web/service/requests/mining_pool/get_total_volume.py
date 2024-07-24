@@ -1,22 +1,16 @@
-from service.contracts import mining_pool
-from service.utils import types
 from service.requests.base import abs_class
-from service.utils.json import extractor
+from mining.models import TotalVolume
 
 
 class GetTotalVolume(abs_class.Fire):
     def __init__(self, validated_data):
         super().__init__(validated_data)
-        self.call = mining_pool.MiningPool(self.keypair)
-        self.res = self.call.get_total_volume()
+        self.total_volume = TotalVolume.objects.all().first()
 
     def results(self):
-        return {
-            "provider": extractor.get_data_or_err(self.res.value_serialized)
-        }
+        return self.total_volume.totals
 
     def is_success(self):
-        extractor.get_data_or_err(self.res.value_serialized)
-        if extractor.check:
+        if self.total_volume is not None:
             return True
         return False

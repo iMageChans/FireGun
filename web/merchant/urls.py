@@ -15,6 +15,6 @@ urlpatterns = [
     path('give-points-usdt/', GivePointsUSDTView.as_view(), name='give-points-usdt'),
     path('usdt-payment/', USDTPaymentView.as_view(), name='usdt-payment'),
     path('d9-payment/', D9PaymentView.as_view(), name='d9-payment'),
-    path('get-merchant_expiry/', GetMerchantExpiryView.as_view(), name='get-merchant_expiry'),
+    path('get-merchant-expiry/', GetMerchantExpiryView.as_view(), name='get-merchant_expiry'),
     path('get-account/', GetAccountView.as_view(), name='get-account'),
 ]

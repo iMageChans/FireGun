@@ -10,8 +10,8 @@ class MiningPool(D9Contract):
     def get_accumulative_reward_pool(self):
         return self.contract_read('get_accumulative_reward_pool')
 
-    def get_merchant_volment(self):
-        return self.contract_read('get_merchant_volment')
+    def get_merchant_volume(self):
+        return self.contract_read('get_merchant_volume')
 
     def get_session_volume(self, session_index: int):
         params = {

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-fo9*x#kmbswf+0k%i2d_^68lan9r&waue!f8#2!wmgts1(p+o#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "burning.apps.BurningConfig",
     "rest_framework",
+    'drf_yasg',
     "amm.apps.AmmConfig",
     "merchant.apps.MerchantConfig",
     "mining.apps.MiningConfig",

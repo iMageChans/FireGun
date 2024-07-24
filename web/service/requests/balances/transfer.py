@@ -1,8 +1,6 @@
-from service.pallets import balances
 from service.utils.accounts import get_valid_address
-from service.utils import numbers
-from service.utils.json import extractor
 from service.requests.base import abs_class
+from users_profile.tasks import *
 
 
 class Transfer(abs_class.Fire):
@@ -16,7 +14,10 @@ class Transfer(abs_class.Fire):
         self.res = balances.BalancesExtrinsics().chain_interface.submit_extrinsic(self.extrinsic, wait_for_inclusion=True)
 
     def results(self):
-        return extractor.get_transfer_data(self.res)
+        if self.res.is_success:
+            update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+            return extractor.get_transfer_data(self.res)
+        return self.res.error_message
 
     def is_success(self):
         return self.res.is_success

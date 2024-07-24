@@ -1,6 +1,5 @@
 from service.utils import numbers
 from service.requests.base import abs_class
-from service.utils.json import extractor
 from burning.models import BurningTotal
 
 

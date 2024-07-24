@@ -1,4 +1,11 @@
 from rest_framework import serializers
+from merchant.models import *
+
+
+class MerchantExpirySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MerchantExpiry
+        fields = '__all__'
 
 
 class SubscribeSerializer(serializers.Serializer):

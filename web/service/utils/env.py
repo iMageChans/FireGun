@@ -1,6 +1,7 @@
 import os
 import environ
 from pathlib import Path
+from substrateinterface import Keypair
 
 
 class EnvConfig:
@@ -14,7 +15,14 @@ class EnvConfig:
         return self.env(key, default=default)
 
     def get_private_key(self):
-        return self.get('WEB_PRIVATE_KEY')
+        private_key = self.get('WEB_PRIVATE_KEY')
+        if private_key:
+            return private_key
+        else:
+            mnemonic = Keypair.generate_mnemonic()
+            keypair = Keypair.create_from_mnemonic(mnemonic, ss58_format=9)
+            private_key = keypair.public_key
+            return private_key
 
 
 

@@ -13,6 +13,7 @@ class Withdraw(abs_class.Fire):
         if self.res.is_success:
             try:
                 update_or_create_d9_balance_celery.delay(self.account_id.mate_data_address())
+                update_or_create_user_burning_profile_celery.delay(self.account_id.mate_data_address())
             except Exception as e:
                 return e
             return extractor.get_transfer_data(self.res)

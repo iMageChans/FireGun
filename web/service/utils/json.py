@@ -68,7 +68,7 @@ class JSONExtractor:
             self.check = True
         self.check = False
 
-        res = data['result']['Ok']['data']['Ok']['Ok']
+        res = data['result']['Ok']['data']['Ok']
         return {
             "amount_burned": numbers.DecimalTruncator(2).format_d9(res['amount_burned']),
             "balance_due": numbers.DecimalTruncator(2).format_d9(res['balance_due']),
@@ -77,7 +77,7 @@ class JSONExtractor:
             "last_burn": res['last_burn']['time'],
         }
 
-    def get_burning_portfolio_read(self, data):
+    def get_merchant_portfolio(self, data):
 
         if isinstance(data, dict):
             self.check = True
@@ -85,11 +85,12 @@ class JSONExtractor:
 
         res = data['result']['Ok']['data']['Ok']
         return {
-            "amount_burned": numbers.DecimalTruncator(2).format_d9(res['amount_burned']),
-            "balance_due": numbers.DecimalTruncator(2).format_d9(res['balance_due']),
-            "balance_paid": numbers.DecimalTruncator(2).format_d9(res['balance_paid']),
-            "last_withdrawal": res['last_withdrawal']['time'],
-            "last_burn": res['last_burn']['time'],
+            "green_points": numbers.DecimalTruncator(2).format_usdt(res['green_points']),
+            "relationship_factors": res['relationship_factors'],
+            "last_withdrawal": res['last_withdrawal'],
+            "redeemed_usdt": numbers.DecimalTruncator(2).format_usdt(res['redeemed_usdt']),
+            "redeemed_d9": numbers.DecimalTruncator(2).format_d9(res['redeemed_d9']),
+            "created_at": res['last_burn'],
         }
 
 

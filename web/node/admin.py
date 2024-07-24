@@ -1,3 +1,7 @@
 from django.contrib import admin
+from node.models import VoteLimit
 
-# Register your models here.
+
+@admin.register(VoteLimit)
+class VoteLimitAdmin(admin.ModelAdmin):
+    list_display = ('totals',)

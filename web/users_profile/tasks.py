@@ -10,6 +10,17 @@ from service.utils import accounts
 
 
 @shared_task
+def update_or_create_user_burning_profile_celery(account_id):
+    update_or_create_burning_profile(account_id=account_id)
+    print({"account_id": account_id})
+
+@shared_task
+def update_or_create_merchant_expiry_celery(account_id):
+    update_or_create_merchant_expiry(account_id=account_id)
+    print({"account_id": account_id})
+
+
+@shared_task
 def update_or_create_usdt_balance_celery(account_id):
     update_or_create_d9_balance(account_id=account_id)
     print({"account_id": account_id})

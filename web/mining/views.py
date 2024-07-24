@@ -1,7 +1,7 @@
 from base.views import BaseView
 from mining import serializers
 from service.requests.mining_pool.get_accumulative_reward_pool import GetAccumulativeRewardPool
-from service.requests.mining_pool.get_merchant_volment import GetMerchantVolment
+from service.requests.mining_pool.get_merchant_volment import GetMerchantVolume
 from service.requests.mining_pool.get_session_volume import GetSessionVolume
 from service.requests.mining_pool.get_total_volume import GetTotalVolume
 
@@ -11,9 +11,9 @@ class AccumulativeRewardPoolView(BaseView):
     action_class = GetAccumulativeRewardPool
 
 
-class MerchantVolmentView(BaseView):
+class MerchantVolumeView(BaseView):
     serializer_class = serializers.GetMerchantVolmentSerializer
-    action_class = GetMerchantVolment
+    action_class = GetMerchantVolume
 
 
 class SessionVolumeView(BaseView):

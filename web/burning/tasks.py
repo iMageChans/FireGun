@@ -8,7 +8,7 @@ from service.utils.accounts import *
 
 
 @shared_task
-def get_burning_totals():
+def get_burning_totals_celery():
     private_key = config.get_private_key()
     keypair = Keypair.create_from_private_key(private_key, ss58_format=9)
     extrinsic = main_mining.MainMining(keypair).get_total_burned()
@@ -22,12 +22,3 @@ def get_burning_totals():
     else:
         first_burning_totals = BurningTotal.objects.create(totals=res)
         return {"status": "created", "totals": first_burning_totals.totals}
-
-
-@shared_task
-def update_or_create_user_burning_profile_celery(data):
-    user_burning_profile, created = UserBurningProfile.objects.update_or_create(
-        account_id=data['account_id'],
-        defaults=data
-    )
-    print({"account_id": user_burning_profile.account_id, "created": created})

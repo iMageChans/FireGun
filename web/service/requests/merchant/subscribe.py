@@ -1,4 +1,3 @@
-from service.contracts import merchant
 from service.requests.base import abs_class
 from users_profile.tasks import *
 
@@ -12,6 +11,7 @@ class Subscribe(abs_class.Fire):
 
     def results(self):
         update_or_create_usdt_balance_celery.delay(self.account_id.mate_data_address())
+        update_or_create_merchant_expiry_celery.delay(self.account_id.mate_data_address())
         return extractor.get_transfer_data(self.res)
 
     def is_success(self):
