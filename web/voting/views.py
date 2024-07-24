@@ -13,6 +13,9 @@ from service.requests.voting.change_candidate_support_share import ChangeCandida
 from service.requests.voting.delegate_votes import DelegateVotes
 from service.requests.voting.redistribute_votes import RedistributeVotes
 from service.requests.voting.remove_candidacy import RemoveCandidacy
+from rest_framework import viewsets
+from .models import Ranks
+from .serializers import RanksSerializer
 
 
 class GetNumberOfCandidatesView(BaseView):
@@ -91,3 +94,8 @@ class RemoveCandidacyView(BaseView):
 
     serializer_class = serializers.RemoveCandidacySerializer
     action_class = RemoveCandidacy
+
+
+class RanksViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Ranks.objects.all().order_by('-accumulative_votes')
+    serializer_class = RanksSerializer

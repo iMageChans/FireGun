@@ -1,4 +1,11 @@
 from rest_framework import serializers
+from voting.models import Ranks
+
+
+class RanksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ranks
+        fields = '__all__'
 
 
 class GetNumberOfCandidatesSerializer(serializers.Serializer):
