@@ -17,7 +17,7 @@ class D9Contract(ContractInstance):
                 'abis',
                 metadata_file
             ),
-            substrate=D9Interface(url=config.get('TEST_NET_URL'))
+            substrate=D9Interface(url=config.get('MAIN_NET_URL'))
         )
         self.keypair = keypair
         self.gas_predit_result = None

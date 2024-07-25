@@ -24,7 +24,7 @@ def to_number(value, precision=12):
 
 
 def get_return_percent(total_amount_burned):
-    total_amount_burned = format_number(total_amount_burned, 12)
+
     first_threshold_amount = 200_000_000
     percentage = 0.008
 

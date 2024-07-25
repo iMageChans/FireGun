@@ -1,3 +1,6 @@
 from django.contrib import admin
+from burning.models import BurningTotal
 
-# Register your models here.
+@admin.register(BurningTotal)
+class BurningTotalAdmin(admin.ModelAdmin):
+    list_display = ('totals', )
