@@ -6,6 +6,18 @@ from enum import Enum
 from service.utils.env import config
 from typing import Optional
 
+from dogpile.cache import make_region
+from django_redis import get_redis_connection
+
+# 配置 Dogpile Cache 使用 Redis 作为缓存后端
+redis_connection = get_redis_connection('default')
+
+# 配置 Dogpile Cache 使用 Redis 作为缓存后端
+region = make_region().configure(
+    'dogpile.cache.memory',
+    expiration_time=3600  # 设置缓存过期时间为3600秒
+)
+
 
 class D9Contract(ContractInstance):
 
@@ -17,8 +29,14 @@ class D9Contract(ContractInstance):
                 'abis',
                 metadata_file
             ),
-            substrate=D9Interface(url=config.get('MAIN_NET_URL'))
+            substrate=D9Interface(
+                url=config.get('MAIN_NET_URL'),
+                cache_region=region,
+                auto_discover=True,
+                auto_reconnect=True,
+            ),
         )
+
         self.keypair = keypair
         self.gas_predit_result = None
 

@@ -8,12 +8,15 @@ class ChangeCandidateName(abs_class.Fire):
         name = validated_data['name']
         extrinsics = voting.VotingExtrinsics()
         call = extrinsics.change_candidate_name(name)
-        nonce = extrinsics.chain_interface.query('System', 'Account', [self.keypair.ss58_address])
-        extrinsic = extrinsics.chain_interface.create_signed_extrinsic(call=call, keypair=self.keypair, nonce=nonce.value_serialized['nonce'])
-        self.res = extrinsics.chain_interface.submit_extrinsic(extrinsic, wait_for_inclusion=True)
+        nonce = extrinsics.chain_interface.get_account_nonce(self.keypair.ss58_address)
+        try:
+            extrinsic = extrinsics.chain_interface.create_signed_extrinsic(call=call, keypair=self.keypair, nonce=nonce)
+            self.res = extrinsics.chain_interface.submit_extrinsic(extrinsic, wait_for_inclusion=True)
+        except Exception as e:
+            print("error:", e)
 
     def results(self):
-        return self.res.extrinsic.value_serialized
+        return self.res.error_message
 
     def is_success(self):
         return self.res.is_success

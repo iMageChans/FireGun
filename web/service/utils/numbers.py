@@ -1,6 +1,3 @@
-from decimal import Decimal, getcontext, InvalidOperation
-
-
 def format_number(value, precision=12):
 
     if isinstance(value, str):

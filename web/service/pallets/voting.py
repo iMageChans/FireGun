@@ -108,7 +108,7 @@ class VotingExtrinsics(PalletExtrinsicsBase):
         Returns:
             GenericCalls
             """
-        self.compose_call("ChangeCandidateName", {'name': name})
+        self.compose_call("change_candidate_name", {'name': name})
 
     def change_candidate_support_share(self, percent: int):
         """

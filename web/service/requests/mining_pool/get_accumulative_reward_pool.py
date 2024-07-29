@@ -2,7 +2,6 @@ from service.requests.base import abs_class
 from mining.models import AccumulativeRewardPool
 
 
-
 class GetAccumulativeRewardPool(abs_class.Fire):
     def __init__(self, validated_data):
         super().__init__(validated_data)

@@ -1,4 +1,4 @@
-from service.contracts.base_class import D9Contract, Direction
+from service.contracts.base_class import D9Contract
 from substrateinterface import Keypair
 
 

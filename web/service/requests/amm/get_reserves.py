@@ -8,6 +8,8 @@ from service.utils import numbers
 class GetReserves:
     def __init__(self, validated_data):
         super().__init__(validated_data)
+        res = market_maker.MarketMaker(validated_data['keypair'])
+
 
     def results(self):
         first_currency_reserve = CurrencyReserves.objects.first()

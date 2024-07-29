@@ -11,7 +11,7 @@ def get_accumulative_reward_pool_celery():
     private_key = config.get_private_key()
     keypair = Keypair.create_from_private_key(private_key, ss58_format=9)
     extrinsic = mining_pool.MiningPool(keypair).get_accumulative_reward_pool()
-    res = extractor.get_data_or_err(extrinsic.value_serialized)
+    res = extractor.get_data_or_err(extrinsic.value)
     accumulative_reward_pool = AccumulativeRewardPool.objects.all().first()
 
     if accumulative_reward_pool:
@@ -28,7 +28,7 @@ def get_merchant_volume_celery():
     private_key = config.get_private_key()
     keypair = Keypair.create_from_private_key(private_key, ss58_format=9)
     extrinsic = mining_pool.MiningPool(keypair).get_merchant_volume()
-    res = extractor.get_data_or_err(extrinsic.value_serialized)
+    res = extractor.get_data_or_err(extrinsic.value)
     merchant_volume = MerchantVolume.objects.all().first()
 
     if merchant_volume:
@@ -45,7 +45,7 @@ def get_total_volume_celery():
     private_key = config.get_private_key()
     keypair = Keypair.create_from_private_key(private_key, ss58_format=9)
     extrinsic = mining_pool.MiningPool(keypair).get_total_volume()
-    res = extractor.get_data_or_err(extrinsic.value_serialized)
+    res = extractor.get_data_or_err(extrinsic.value)
     total_volum = TotalVolume.objects.all().first()
 
     if total_volum:

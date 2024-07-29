@@ -1,5 +1,6 @@
 from substrateinterface import Keypair
 
+
 def check_keypair(data):
     if Keypair.validate_mnemonic(data):
         try:
