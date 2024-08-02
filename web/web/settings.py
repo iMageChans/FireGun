@@ -28,11 +28,12 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    'https://d9-test-server.q6z4kzhr.uk',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     "http://localhost:5173",
+#     'https://d9-test-server.q6z4kzhr.uk',
+# ]
 
 
 # Application definition
